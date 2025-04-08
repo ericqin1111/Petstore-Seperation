@@ -1,0 +1,28 @@
+package com.example.petstoresep.controller;
+
+import com.example.petstoresep.entity.JwtUser;
+import com.example.petstoresep.persistence.UserMapper;
+import com.example.petstoresep.service.impl.UserServiceImpl;
+import com.example.petstoresep.util.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/tokens")
+public class TokenController {
+    @Autowired
+    UserServiceImpl userService;
+
+    @PostMapping
+    public ResponseEntity<Response> login(@RequestBody JwtUser user){
+        if(user==null){
+            return ResponseEntity.ok(Response.error(0,"账户不能为空"));
+        }
+
+        String msg=userService.login(user);
+        return ResponseEntity.ok(Response.success(msg));
+    }
+
+
+}

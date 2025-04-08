@@ -6,7 +6,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -14,24 +18,48 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeHttpRequests()
-                .anyRequest().permitAll();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()  // 禁用 CSRF 防护
+                .authorizeRequests()
+                .requestMatchers("/user/**").permitAll()// 配置请求的访问规则
+                .requestMatchers("/tokens/**").permitAll() // 开放登录和注册页面
+//                .anyRequest().authenticated() // 其他请求需要认证
+                .and()
+                .httpBasic(); // 使用基本认证方式
         return http.build();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        // 创建基于内存的用户信息管理器
-//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//
-//
-//        manager.createUser(
-//                // 创建UserDetails对象，用于管理用户名、用户密码、用户角色、用户权限等内容
-//                User.withDefaultPasswordEncoder().username("user").password("user123").roles("USER").build()
-//        );
-//        // 如果自己配置的有账号密码, 那么上面讲的 user 和 随机字符串 的默认密码就不能用了
-//        return manager;
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // 密码加密方式
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+
+        return username -> {
+            // 你可以根据需求自定义加载用户信息
+            // 示例中返回一个简单的用户
+            if ("user".equals(username)) {
+                return User.builder()
+                        .username("user")
+                        .password(passwordEncoder().encode("password")) // 加密密码
+                        .roles("USER")
+                        .build();
+            }
+            throw new UsernameNotFoundException("User not found");
+        };
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+
+        // 配置AuthenticationManager
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+
+        return authenticationManagerBuilder.build();
+    }
 }
