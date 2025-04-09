@@ -1,9 +1,11 @@
 package com.example.petstoresep.controller;
 
 import com.example.petstoresep.entity.Category;
+import com.example.petstoresep.entity.Item;
 import com.example.petstoresep.service.CatalogService;
 import com.example.petstoresep.util.Response;
 import com.example.petstoresep.vo.CategoryVO;
+import com.example.petstoresep.vo.ItemP;
 import com.example.petstoresep.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,15 @@ public class CatalogController {
         System.out.println("VPO:"+productVO.getProductId());
         System.out.println("VPO:"+productVO.getItemList());
         return ResponseEntity.ok(Response.success(productVO));
+    }
+
+
+    @GetMapping("search/{key}")
+    public ResponseEntity<Response> search(@PathVariable String key){
+
+        List<ItemP> itemList=catalogService.searchItem(key);
+        System.out.println(itemList);
+        return ResponseEntity.ok(Response.success(itemList));
     }
 
 //    @GetMapping("search/{type}/{key}")
