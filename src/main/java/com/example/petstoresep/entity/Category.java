@@ -11,7 +11,6 @@ import lombok.Getter;
 public class Category {
     @TableId(value ="catid")
     private String categoryId;
-    @Getter
     private String name;
     @TableField("descn")
     private String description;

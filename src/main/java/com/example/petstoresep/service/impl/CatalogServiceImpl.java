@@ -9,6 +9,7 @@ import com.example.petstoresep.persistence.ItemMapper;
 import com.example.petstoresep.persistence.ProductMapper;
 import com.example.petstoresep.service.CatalogService;
 import com.example.petstoresep.vo.CategoryVO;
+import com.example.petstoresep.vo.ItemP;
 import com.example.petstoresep.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,8 +47,8 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
-    public List<CategoryVO> searchCategory(String key) {
-        return categoryMapper.findCategoryByNameLike(key);
+    public List<ItemP> searchItem(String key) {
+        return categoryMapper.findItemByProductNameLike(key);
     }
 
     public ProductVO getProduct(String productId){
