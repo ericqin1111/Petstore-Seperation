@@ -5,13 +5,21 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+
 import com.auth0.jwt.interfaces.DecodedJWT;
-import jakarta.annotation.PostConstruct;
+
+
+import io.jsonwebtoken.Claims;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +60,7 @@ public class JwtUtil {
         // 首先创建一个JWT.builder()来配置JWT的各个部分
         JWTCreator.Builder builder = JWT.create()
                 .withHeader(headerMap) // 添加头部信息
-                .withClaim("username", username) // 添加账号
+                .withSubject(username)
                 .withExpiresAt(expireDate) // 设置过期时间
                 .withIssuedAt(new Date()) // 设置签发时间
                 .withIssuer("sdApp"); // 可选：设置发行者
@@ -109,4 +117,25 @@ public class JwtUtil {
         }
 
     }
+
+    public static Claims parseJwt(String jwt) {
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(jwt)
+                .getPayload();
+    }
+
+    public static String getUsername(String token) {
+        Claims claims = parseJwt(token);
+
+        String username = claims.getSubject();
+
+        return username;
+
+
+    }
+
+
 }

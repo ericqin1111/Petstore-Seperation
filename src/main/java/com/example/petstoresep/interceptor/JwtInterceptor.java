@@ -23,6 +23,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         String authToken=token.substring(7);
+
+        //获取用户名放在attribute
+        String username = JwtUtil.getUsername(authToken);
+        request.setAttribute("username",username);
+
         boolean isValid= JwtUtil.verifyToken(authToken);
         if(!isValid){
             System.out.println("token2:"+token);
