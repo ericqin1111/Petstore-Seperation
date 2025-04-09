@@ -1,21 +1,17 @@
 package com.example.petstoresep.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.petstoresep.entity.CartStore;
 import com.example.petstoresep.persistence.CartStoreMapper;
 import com.example.petstoresep.persistence.ItemMapper;
 import com.example.petstoresep.service.CartService;
-import com.example.petstoresep.vo.CartItemVO;
 import com.example.petstoresep.vo.CartVO;
 import com.example.petstoresep.vo.ItemVO;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Service("CartService")
@@ -41,40 +37,56 @@ public class CartServiceImpl implements CartService {
         return cart;
     }
 
+
+
     @Override
-    public void addItem(String itemId, HttpSession session) {
-//        CartVO cart = (CartVO) session.getAttribute("cart");
-//        CartItemVO cartItem = cart.getItemMap().get(itemId);
-//
-//        if (cartItem == null) {
-//            ItemVO item = itemMapper.getItemById(itemId);
-//            cart.addItem(item, true);
-//
-//
-//        }
-//        else {
-//            cartItem.incrementQuantity();
-//
-//        }
+    public Boolean deleteItem(String username, String itemId) {
+        try {
+            cartStoreMapper.deleteCartStoreByUsernameAndItemId(username, itemId);
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public void deleteItem(String itemId, HttpSession session) {
-
-
+    public Boolean addItem(String userName, String itemId) {
+        try{
+            if (cartStoreMapper.isCartStoreExist(userName, itemId)) {
+                cartStoreMapper.increaseCartStoreQuantity(userName, itemId);
+            }
+            else {
+                cartStoreMapper.insertCartStore(userName, itemId, 1);
+            }
+        }catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public void updateItem(HttpServletRequest req) {
+    public Boolean updateItem(String userName, String itemId, int quantity) {
+        if (cartStoreMapper.isCartStoreExist(userName, itemId)) {
+            try {
+                cartStoreMapper.updateCartStoreQuantity(userName, itemId, quantity);
+            }catch (Exception e){
+                System.out.println(e);
+                return false;
+            }
 
+            return true;
+
+        }
+        else {
+            return false;
+        }
 
 
     }
 
-    @Override
-    public void loadCart(HttpServletRequest httpServletRequest) {
-
-    }
 
 
 }

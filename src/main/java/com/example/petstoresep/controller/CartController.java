@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Controller
 @RequestMapping("/cart")
 public class CartController {
@@ -21,22 +23,47 @@ public class CartController {
 
     //获取数据库里该用户的储存订单
     @GetMapping("getCart")
-    public ResponseEntity<Response> getCart(@RequestParam String userName) {
-        System.out.println(userName);
-        CartVO cart = cartService.getCart(userName);
+    public ResponseEntity<Response> getCart(@RequestParam String username) {
+        System.out.println(username);
+        CartVO cart = cartService.getCart(username);
         return ResponseEntity.ok(Response.success(cart));
     }
 
-    @RequestMapping("removeCartItem")
-    public String removeCartItem(@RequestParam String workingItemId, HttpSession session) {
-        cartService.deleteItem(workingItemId, session);
-        return "redirect:cartForm";
+    @PostMapping("remove")
+    public ResponseEntity<Response> removeCartItem(@RequestAttribute String username, @RequestBody Map<String, String> requestBody) {
+        String itemId = requestBody.get("itemId");
+        if(cartService.deleteItem(username, itemId)) {
+            return ResponseEntity.ok(Response.success(true));
+        }
+        else {
+            return ResponseEntity.ok(Response.success(false));
+        }
     }
 
-    @PostMapping("updateCart")
-    public String updateCart(HttpServletRequest request) {
-        cartService.updateItem(request);
-        return "redirect:cartForm";
+    @PostMapping("add")
+    public ResponseEntity<Response> addCartItem(@RequestBody Map<String, String> requestBody) {
+        String username = requestBody.get("username");
+        String itemId = requestBody.get("itemId");
+        if (cartService.addItem(username, itemId)) {
+            return ResponseEntity.ok(Response.success(true));
+        }
+        else {
+            return ResponseEntity.ok(Response.success(false));
+        }
+
+    }
+
+    @PostMapping("update")
+    public ResponseEntity<Response> updateCart(@RequestAttribute String username, @RequestBody Map<String, String> requestBody) {
+        String itemId = requestBody.get("itemId");
+        int quantity = Integer.parseInt(requestBody.get("quantity"));
+        if (cartService.updateItem(username, itemId, quantity)) {
+            return ResponseEntity.ok(Response.success(true));
+        }
+        else {
+            return ResponseEntity.ok(Response.success(false));
+        }
+
     }
 
 }
