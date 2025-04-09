@@ -18,12 +18,13 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     public String login(JwtUser user) {
-        JwtUser reqUser = userMapper.selectLogin(user.getUsername());
+        String password = userMapper.selectLogin(user.getUsername());
 
         PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
-        if (reqUser != null && passwordEncoder.matches(user.getPassword(), reqUser.getPassword())) {
+        if (password != null && password.equals(user.getPassword())) {
             // 用户名和密码匹配，生成JWT
+            System.out.println("yeah");
             return JwtUtil.createToken(user.getUsername());
         }
 

@@ -11,6 +11,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 import io.jsonwebtoken.Claims;
 
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.Data;
@@ -48,8 +49,10 @@ public class JwtUtil {
 
         // 设置JWT的过期时间为当前时间加上1周（1周的毫秒数）
         long twoWeeksInMilliseconds = 7 * 24 * 60 * 60 * 1000L;
+
+        Date now = new Date();
         //创建了一个Date对象，表示从当前时间起加上一周后的日期和时间，这个日期和时间将被用作JWT的过期时间
-        Date expireDate = new Date(System.currentTimeMillis() + twoWeeksInMilliseconds);
+        Date expireDate = new Date(now.getTime() + twoWeeksInMilliseconds);
 
         // 创建一个Map来存储JWT头部信息
         Map<String, Object> headerMap = new HashMap<>();
@@ -62,7 +65,7 @@ public class JwtUtil {
                 .withHeader(headerMap) // 添加头部信息
                 .withSubject(username)
                 .withExpiresAt(expireDate) // 设置过期时间
-                .withIssuedAt(new Date()) // 设置签发时间
+                .withIssuedAt(now) // 设置签发时间
                 .withIssuer("sdApp"); // 可选：设置发行者
         //这里的 "yourIssuer" 是一个占位符，你应该替换为实际的发行者名称，例如你的应用或服务的名称
 
@@ -120,6 +123,8 @@ public class JwtUtil {
 
     public static Claims parseJwt(String jwt) {
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
+
         return Jwts.parser()
                 .verifyWith(key)
                 .build()
@@ -128,8 +133,9 @@ public class JwtUtil {
     }
 
     public static String getUsername(String token) {
-        Claims claims = parseJwt(token);
 
+        Claims claims = parseJwt(token);
+        System.out.println(claims.getSubject());
         String username = claims.getSubject();
 
         return username;
