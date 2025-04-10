@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
             return JwtUtil.createToken(user.getUsername());
         }
 
-        return "用户名或密码错误";
+        return "";
     }
 
 

@@ -21,7 +21,12 @@ public class TokenController {
         }
 
         String msg=userService.login(user);
-        return ResponseEntity.ok(Response.success(msg));
+        if(msg!=""){
+            return ResponseEntity.ok(Response.success(msg));
+        }
+        else
+            return ResponseEntity.ok(Response.error(1,"用户名不存在或密码错误"));
+
     }
 
 

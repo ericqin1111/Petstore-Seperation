@@ -44,7 +44,12 @@ public class CatalogController {
 
         List<ItemP> itemList=catalogService.searchItem(key);
         System.out.println(itemList);
-        return ResponseEntity.ok(Response.success(itemList));
+        if(itemList!=null){
+            return ResponseEntity.ok(Response.success(itemList));
+        }
+        else
+            return ResponseEntity.ok(Response.error(1,"参数不正确"));
+
     }
 
 //    @GetMapping("search/{type}/{key}")
