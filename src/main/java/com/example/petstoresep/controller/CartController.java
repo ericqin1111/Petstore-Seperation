@@ -68,5 +68,16 @@ public class CartController {
 
     }
 
+    @PostMapping("deleteAll")
+    public ResponseEntity<Response> deleteAll(@RequestAttribute String username, @RequestBody Map<String, String> requestBody) {
+        if (cartService.deleteAll(username)) {
+            return ResponseEntity.ok(Response.success(true));
+        }
+        else {
+            return ResponseEntity.ok(Response.success(false));
+        }
+
+    }
+
 }
 
