@@ -15,8 +15,8 @@ public interface UserMapper extends BaseMapper<JwtUser> {
     int registerUser( String username, String password);
 
     //自定义查询账号方法
-    @Select("SELECT * FROM signon WHERE username = #{username}")
-    JwtUser selectLogin(@Param("username") String username);
+    @Select("SELECT password FROM signon WHERE username = #{username}")
+    String selectLogin(@Param("username") String username);
 
 
 }

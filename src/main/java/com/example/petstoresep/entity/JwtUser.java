@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Data
 @Accessors
 @TableName("signon")
@@ -14,7 +16,7 @@ public class JwtUser {
     private boolean valid;
     private String username;
     private String password;
-    private String role;
+    private List<String> role;
 
     public JwtUser(){
         this.valid=false;

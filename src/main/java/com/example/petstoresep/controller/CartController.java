@@ -23,9 +23,10 @@ public class CartController {
 
     //获取数据库里该用户的储存订单
     @GetMapping("getCart")
-    public ResponseEntity<Response> getCart(@RequestParam String username) {
+    public ResponseEntity<Response> getCart(@RequestAttribute String username) {
         System.out.println(username);
         CartVO cart = cartService.getCart(username);
+        System.out.println(cart);
         return ResponseEntity.ok(Response.success(cart));
     }
 
@@ -41,8 +42,9 @@ public class CartController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<Response> addCartItem(@RequestBody Map<String, String> requestBody) {
-        String username = requestBody.get("username");
+    public ResponseEntity<Response> addCartItem(@RequestAttribute String username, @RequestBody Map<String, String> requestBody) {
+
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         String itemId = requestBody.get("itemId");
         if (cartService.addItem(username, itemId)) {
             return ResponseEntity.ok(Response.success(true));

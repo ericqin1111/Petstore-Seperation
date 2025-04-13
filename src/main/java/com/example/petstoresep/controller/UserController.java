@@ -22,8 +22,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Response> register(@RequestBody JwtUser user){
-        JwtUser query=userMapper.selectLogin(user.getUsername());
-        if(query==null){
+        String password =userMapper.selectLogin(user.getUsername());
+        System.out.println("user"+user.getUsername());
+        if(password == null){
             System.out.println(user.getUsername());
             System.out.println(user.getPassword());
             PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
