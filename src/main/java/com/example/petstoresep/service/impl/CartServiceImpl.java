@@ -91,6 +91,13 @@ public class CartServiceImpl implements CartService {
 
     }
 
-
-
+    public Boolean deleteAll(String userName) {
+        try {
+            cartStoreMapper.clearCartStoreByUsername(userName);
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
 }
