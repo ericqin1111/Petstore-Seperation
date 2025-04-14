@@ -1,11 +1,17 @@
 package com.example.petstoresep.persistence;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.petstoresep.entity.Category;
 import com.example.petstoresep.entity.Item;
+import com.example.petstoresep.vo.ItemP;
 import com.example.petstoresep.vo.ItemVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
@@ -31,4 +37,15 @@ public interface ItemMapper extends BaseMapper<Item> {
             "and i.itemid = v.itemid " +
             "and i.itemid = #{itemId} ")
     public ItemVO getItemById(String itemId);
+
+
+    @Results({
+            @Result(property = "attribute1",column = "attr1"),
+            @Result(property = "attribute2",column = "attr2"),
+            @Result(property = "attribute3",column = "attr3"),
+            @Result(property = "attribute4",column = "attr4"),
+            @Result(property = "attribute5",column = "attr5")
+    })
+    @Select("SELECT * FROM itemP")
+    public List<ItemP> getAllItem();
 }

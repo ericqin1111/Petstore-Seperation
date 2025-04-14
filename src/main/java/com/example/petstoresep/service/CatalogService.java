@@ -1,6 +1,8 @@
 package com.example.petstoresep.service;
 
+import com.example.petstoresep.entity.Category;
 import com.example.petstoresep.entity.Item;
+import com.example.petstoresep.entity.Product;
 import com.example.petstoresep.vo.CategoryVO;
 import com.example.petstoresep.vo.ItemP;
 import com.example.petstoresep.vo.ProductVO;
@@ -13,4 +15,10 @@ public interface CatalogService {
     public List<ItemP> searchItem(String key);
 
     public ProductVO getProduct(String productId);
+
+    public List<Category> getAllCate();
+
+    public List<Product> getAllPro();
+
+    public List<ItemP> getAllItem();
 }

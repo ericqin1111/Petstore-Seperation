@@ -26,7 +26,7 @@ public class TokenController {
 
         if(msg!=""){
             response.addHeader("Authorization", "Bearer " + msg);
-            return ResponseEntity.ok(Response.success(null));
+            return ResponseEntity.ok(Response.success(msg));
         }
         else
             return ResponseEntity.ok(Response.error(1,"用户名不存在或密码错误"));
