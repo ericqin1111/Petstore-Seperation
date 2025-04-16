@@ -22,18 +22,22 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Response> register(@RequestBody JwtUser user){
-        String password =userMapper.selectLogin(user.getUsername());
-        if(password == null){
-            System.out.println(user.getUsername());
-            System.out.println(user.getPassword());
-            PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-            String encode=passwordEncoder.encode(user.getPassword());
-            int result=userMapper.registerUser(user.getUsername(),encode);
-            System.out.println(result);
-            return ResponseEntity.ok(Response.success(result));
+
+        if(user!=null){
+            String password =userMapper.selectLogin(user.getUsername());
+            if(password == null){
+                PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+                String encode=passwordEncoder.encode(user.getPassword());
+                int result=userMapper.registerUser(user.getUsername(),encode);
+                return ResponseEntity.ok(Response.success(result));
+            }
+            else
+                return ResponseEntity.ok(Response.error(1,"用户已存在"));
         }
-        else
+        else {
             return ResponseEntity.ok(Response.error(1,"用户已存在"));
+        }
+
     }
 
 

@@ -2,6 +2,7 @@ package com.example.petstoresep.controller;
 
 import com.example.petstoresep.entity.Category;
 import com.example.petstoresep.entity.Item;
+import com.example.petstoresep.entity.Product;
 import com.example.petstoresep.service.CatalogService;
 import com.example.petstoresep.util.Response;
 import com.example.petstoresep.vo.CategoryVO;
@@ -30,6 +31,30 @@ public class CatalogController {
         return ResponseEntity.ok(Response.success(categoryVO));
     }
 
+    @GetMapping("category")
+    @ResponseBody
+    public ResponseEntity<Response> getAllCate(){
+        List<Category> allCate=catalogService.getAllCate();
+        System.out.println("allCate:"+allCate);
+        return ResponseEntity.ok(Response.success(allCate));
+    }
+
+    @GetMapping("product")
+    @ResponseBody
+    public ResponseEntity<Response> getAllPro(){
+        List<Product> allPro=catalogService.getAllPro();
+        System.out.println("allCate:"+allPro);
+        return ResponseEntity.ok(Response.success(allPro));
+    }
+
+    @GetMapping("item")
+    @ResponseBody
+    public ResponseEntity<Response> getAllItem(){
+        List<ItemP> allItem=catalogService.getAllItem();
+        System.out.println("allItem:"+allItem);
+        return ResponseEntity.ok(Response.success(allItem));
+    }
+
     @GetMapping("product/{productId}")
     public ResponseEntity<Response> getProduct(@PathVariable String productId){
         ProductVO productVO=catalogService.getProduct(productId);
@@ -44,8 +69,16 @@ public class CatalogController {
 
         List<ItemP> itemList=catalogService.searchItem(key);
         System.out.println(itemList);
-        return ResponseEntity.ok(Response.success(itemList));
+        if(itemList!=null){
+            return ResponseEntity.ok(Response.success(itemList));
+        }
+        else
+            return ResponseEntity.ok(Response.error(1,"查询结果为空"));
     }
+
+
+
+
 
 //    @GetMapping("search/{type}/{key}")
 //    public ResponseEntity<List<?>> search(

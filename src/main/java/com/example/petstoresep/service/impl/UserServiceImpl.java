@@ -22,13 +22,13 @@ public class UserServiceImpl implements UserService {
 
         PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
-        if (password != null && password.equals(user.getPassword())) {
+        if (password != null && passwordEncoder.matches(user.getPassword(),password)) {
             // 用户名和密码匹配，生成JWT
             System.out.println("yeah");
             return JwtUtil.createToken(user.getUsername());
         }
 
-        return "用户名或密码错误";
+        return "";
     }
 
 

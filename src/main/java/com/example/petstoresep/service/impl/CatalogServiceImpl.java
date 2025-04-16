@@ -73,4 +73,25 @@ public class CatalogServiceImpl implements CatalogService {
 
         return productVo;
     }
+
+    @Override
+    public List<Category> getAllCate() {
+        List<Category> list=categoryMapper.getAll();
+        for(Category category:list){
+            System.out.println(category);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Product> getAllPro() {
+        return productMapper.getAll();
+    }
+
+    @Override
+    public List<ItemP> getAllItem() {
+        return itemMapper.getAllItem();
+    }
+
+
 }
