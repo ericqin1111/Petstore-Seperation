@@ -20,7 +20,7 @@ public class OrderController {
     OrderService orderService;
 
     @GetMapping("getOrder")
-    public ResponseEntity<Response> getOrder(@RequestAttribute String username,@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<Response> getOrder(@RequestAttribute String username) {
         System.out.println(username);
         List<Order> order = orderService.getOrder(username);
         System.out.println(order);
