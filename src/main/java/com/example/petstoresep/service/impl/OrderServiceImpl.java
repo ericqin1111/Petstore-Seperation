@@ -23,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
     ItemMapper itemMapper;
 
     @Override
-    public Order getOrder(String userName) {
+    public List<Order> getOrder(String userName) {
         Order order = new Order();
         List<Order> orders = orderMapper.getOrder(userName);
         for (Order order1 : orders) {
@@ -39,13 +39,13 @@ public class OrderServiceImpl implements OrderService {
             }
             order.addOrder(itemId,code,addTime,total,status);
         }
-        return order;
+        return orders;
     }
 
     @Override
-    public boolean submitOrder(String username,String code){
+    public boolean submitOrder(Integer id,String itemid,String username,String code,Date addtime,Integer total,Integer isdelete,Integer status){
         try {
-            orderMapper.submitOrder(username,code);
+            orderMapper.submitOrder(id,itemid,username,code,addtime,total,isdelete,status);
         } catch (Exception e) {
             System.out.println(e);
             return false;
