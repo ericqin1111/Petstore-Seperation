@@ -30,15 +30,23 @@ public class DatabaseCreator implements CommandLineRunner {
                     item.attr3,
                     item.attr4,
                     item.attr5,
+                    images.image_data,
+                    images.file_name,
                     product.name
                     
                 FROM
                     item
                 JOIN
                     product
-                ON
+                
+                ON 
                     item.productid=product.productid
-                """;
+                    
+               LEFT JOIN images 
+                    images 
+               ON 
+                    item.itemid = images.itemid;
+                                              """;
         jdbcTemplate.execute(createView);
     }
 }

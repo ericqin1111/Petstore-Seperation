@@ -35,4 +35,11 @@ public class ItemP {
     private String attribute4;
     @TableField("attr5")
     private String attribute5;
+    @TableField("image_data")
+    byte[] imageData;
+    @TableField("file_name")
+    String fileName;
+
+    @TableField(exist = false)
+    private String imageUrl;
 }

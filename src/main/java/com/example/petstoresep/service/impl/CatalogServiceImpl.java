@@ -93,5 +93,10 @@ public class CatalogServiceImpl implements CatalogService {
         return itemMapper.getAllItem();
     }
 
+    @Override
+    public ItemP getItem(String itemId) {
+        return itemMapper.getItem(itemId);
+    }
+
 
 }

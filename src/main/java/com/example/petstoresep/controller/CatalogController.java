@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -51,6 +52,16 @@ public class CatalogController {
     @ResponseBody
     public ResponseEntity<Response> getAllItem(){
         List<ItemP> allItem=catalogService.getAllItem();
+        for (ItemP item : allItem) {
+//            if (item.getImageData() != null) {
+//                String mimeType = getMimeTypeFromFileName(item.getFileName());
+//                String base64 = Base64.getEncoder().encodeToString(item.getImageData());
+//                item.setBase64Image("data:" + mimeType + ";base64," + base64);
+//            }
+            item.setImageUrl("images/" + item.getItemId());
+            item.setImageData(null);
+            item.setFileName(null);
+        }
         System.out.println("allItem:"+allItem);
         return ResponseEntity.ok(Response.success(allItem));
     }
@@ -75,6 +86,7 @@ public class CatalogController {
         else
             return ResponseEntity.ok(Response.error(1,"查询结果为空"));
     }
+
 
 
 

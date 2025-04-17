@@ -5,10 +5,7 @@ import com.example.petstoresep.entity.Category;
 import com.example.petstoresep.entity.Item;
 import com.example.petstoresep.vo.ItemP;
 import com.example.petstoresep.vo.ItemVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -44,8 +41,25 @@ public interface ItemMapper extends BaseMapper<Item> {
             @Result(property = "attribute2",column = "attr2"),
             @Result(property = "attribute3",column = "attr3"),
             @Result(property = "attribute4",column = "attr4"),
-            @Result(property = "attribute5",column = "attr5")
+            @Result(property = "attribute5",column = "attr5"),
+            @Result(property = "imageData",column = "image_data"),
+            @Result(property = "fileName",column = "file_name")
     })
     @Select("SELECT * FROM itemP")
     public List<ItemP> getAllItem();
+
+    @Select("SELECT * from itemp where itemid=#{itemId}")
+    public ItemP getItem(@Param("itemId") String itemId);
+
+//    @Results({
+//            @Result(property = "attribute1",column = "attr1"),
+//            @Result(property = "attribute2",column = "attr2"),
+//            @Result(property = "attribute3",column = "attr3"),
+//            @Result(property = "attribute4",column = "attr4"),
+//            @Result(property = "attribute5",column = "attr5"),
+//            @Result(property = "imageData",column = "image_data"),
+//            @Result(property = "fileName",column = "file_name")
+//    })
+//    @Select("SELECT * FROM itemP")
+//    public ItemP getItem(@Param("file"));
 }
