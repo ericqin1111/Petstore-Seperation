@@ -20,8 +20,7 @@ public class OrderController {
     OrderService orderService;
 
     @GetMapping("getOrder")
-    public ResponseEntity<Response> getOrder(/*@RequestAttribute String username,*/@RequestBody Map<String, String> requestBody) {
-        String username=requestBody.get("username");
+    public ResponseEntity<Response> getOrder(@RequestAttribute String username,@RequestBody Map<String, String> requestBody) {
         System.out.println(username);
         List<Order> order = orderService.getOrder(username);
         System.out.println(order);
@@ -29,11 +28,9 @@ public class OrderController {
     }
 
     @PostMapping("CDS")
-    public ResponseEntity<Response> submitOrder(/*@RequestAttribute String username,*/ @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<Response> submitOrder(@RequestAttribute String username, @RequestBody Map<String, String> requestBody) {
         Integer id=Integer.valueOf(requestBody.get("id"));
-        System.out.println(id);
         String itemid=requestBody.get("itemid");
-        String username=requestBody.get("username");
         String code=requestBody.get("code");
         Date addtime=new Date(requestBody.get("addtime"));
         Integer total=Integer.valueOf(requestBody.get("total"));
@@ -50,8 +47,7 @@ public class OrderController {
     }
 
     @PostMapping("delete")
-    public ResponseEntity<Response> delete(/*@RequestAttribute String username, */@RequestBody Map<String, String> requestBody) {
-        String username=requestBody.get("username");
+    public ResponseEntity<Response> delete(@RequestAttribute String username, @RequestBody Map<String, String> requestBody) {
         String code=requestBody.get("code");
         if (orderService.delete(username,code)) {
             return ResponseEntity.ok(Response.success(true));
@@ -63,8 +59,7 @@ public class OrderController {
     }
 
     @PostMapping("receive")
-    public ResponseEntity<Response> receive(/*@RequestAttribute String username,*/ @RequestBody Map<String, String> requestBody) {
-        String username=requestBody.get("username");
+    public ResponseEntity<Response> receive(@RequestAttribute String username, @RequestBody Map<String, String> requestBody) {
         String code=requestBody.get("code");
         if (orderService.receive(username,code)) {
             return ResponseEntity.ok(Response.success(true));

@@ -24,22 +24,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrder(String userName) {
-        Order order = new Order();
-        List<Order> orders = orderMapper.getOrder(userName);
-        for (Order order1 : orders) {
-            String itemId = order1.getItemId();
-            String code = order1.getCode();
-            Date addTime=order1.getAddTime();
-            Integer total=order1.getTotal();
-            Integer status=order1.getStatus();
-            ItemVO item = itemMapper.getItemById(itemId);
-            System.out.println(item);
-            if (item == null){
-                continue;
-            }
-            order.addOrder(itemId,code,addTime,total,status);
-        }
-        return orders;
+        return orderMapper.getOrder(userName);
     }
 
     @Override
