@@ -21,4 +21,6 @@ public interface CatalogService {
     public List<Product> getAllPro();
 
     public List<ItemP> getAllItem();
+
+    public ItemP getItem(String itemId);
 }
