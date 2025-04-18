@@ -43,7 +43,7 @@ public class DatabaseCreator implements CommandLineRunner {
                     item.productid=product.productid
                     
                LEFT JOIN images 
-                    images 
+                    
                ON 
                     item.itemid = images.itemid;
                                               """;

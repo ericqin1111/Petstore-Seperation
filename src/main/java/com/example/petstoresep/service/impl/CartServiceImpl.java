@@ -1,9 +1,13 @@
 package com.example.petstoresep.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.petstoresep.entity.CartStore;
+import com.example.petstoresep.entity.Image;
 import com.example.petstoresep.persistence.CartStoreMapper;
+import com.example.petstoresep.persistence.ImageMapper;
 import com.example.petstoresep.persistence.ItemMapper;
 import com.example.petstoresep.service.CartService;
+import com.example.petstoresep.vo.CartItemVO;
 import com.example.petstoresep.vo.CartVO;
 import com.example.petstoresep.vo.ItemVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +25,8 @@ public class CartServiceImpl implements CartService {
     ItemMapper itemMapper;
     @Autowired
     CartStoreMapper cartStoreMapper;
-
+    @Autowired
+    ImageMapper imageMapper;
 
 
     @Override
@@ -32,12 +37,26 @@ public class CartServiceImpl implements CartService {
             String itemId = cartStore.getItemId();
             int quantity = cartStore.getQuantity();
             ItemVO item = itemMapper.getItemById(itemId);
-            System.out.println(item);
+            QueryWrapper<Image> qw=new QueryWrapper<>();
+            qw.eq("itemId",itemId);
+            System.out.println("itemid"+itemId);
+            Image image = imageMapper.selectOne(qw);
+            System.out.println("image"+image);
+            if (image != null){
+                item.setImageName(image.getFileName());
+            }
+//            System.out.println(item);
             if (item == null){
                 continue;
             }
             cart.addItem(item, quantity, true);
         }
+//        List<CartItemVO> cartItems = cart.getCartItems();
+//        for (CartItemVO cartItem : cartItems) {
+//            String itemId = cartItem.getItem().getItemId();
+//            int quantity = cartItem.getQuantity();
+//            cartStoreMapper.updateCartStoreQuantity(userName, itemId, quantity);
+//        }
         return cart;
     }
 
